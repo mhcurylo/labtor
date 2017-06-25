@@ -5,13 +5,16 @@ import Data.Char (toLower, isSpace, isAlpha)
 
 main :: IO ()
 main = do
-  filterOutWords <- countFromFile <$> readFile "c.txt"
+  filterOutWords <- countFromFile <$> readFile "sl.txt"
   labour <- rank . (M.\\ filterOutWords) . countFromFile <$> readFile "l.txt"
   conservative <- rank . (M.\\ filterOutWords) . countFromFile <$> readFile "t.txt"
-  print $ take 10 $ ascCommon . inverseMap $ zipTogether labour conservative
+  print $ ascCommon . inverseMap $ zipTogether labour conservative
 
 countFromFile :: String -> M.Map String Int
-countFromFile = M.fromListWith (+) . (`zip` repeat 1) . filter (\x -> length x > 2) . words . filter (\x -> isAlpha x || isSpace x) . map toLower
+countFromFile = M.fromListWith (+) . (`zip` repeat 1) . filter longerThan2 . words . filter isAlphaOrSpace . map toLower
+  where
+    longerThan2 x = length x > 2
+    isAlphaOrSpace x =  isAlpha x || isSpace x
 
 rank :: M.Map String Int -> M.Map String Int
 rank = M.fromList . concatMap attachRank . zip [0..] . M.toDescList . inverseMap
