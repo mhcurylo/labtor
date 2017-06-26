@@ -24,8 +24,8 @@ rank = M.fromList . concatMap attachRank . zip [0..] . M.toDescList . inverseMap
 zipTogether :: M.Map String Int -> M.Map String Int -> M.Map String (Int, Int)
 zipTogether = M.intersectionWith (\x y -> (x, y))
 
-ascCommon :: M.Map (Int, Int) [String] -> [(Int, [String])]
-ascCommon = take 10 . M.assocs . inverseMapWith (\((a, b), v) -> (a + b, map (\s -> show (a, b) ++ ": " ++ s) v))
+ascCommon :: M.Map (Int, Int) [String] -> [String]
+ascCommon = take 10 . concat . map snd . M.assocs . inverseMapWith (\((a, b), v) -> (a + b, v))
 
 inverseMap :: Ord k => Ord v => M.Map k v -> M.Map v [k]
 inverseMap = inverseMapWith (\(k, v) -> (v, [k]))
