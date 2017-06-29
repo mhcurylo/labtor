@@ -10,6 +10,9 @@ main = do
   conservative <- rank . (M.\\ filterOutWords) . countFromFile <$> readFile "t.txt"
   print $ ascCommon . inverseMap $ zipTogether labour conservative
 
+countWords :: String -> M.Map String Int
+countWords = M.fromListWith (+) . (`zip` repeat 1) . words . map toLower
+
 countFromFile :: String -> M.Map String Int
 countFromFile = M.fromListWith (+) . (`zip` repeat 1) . filter longerThan2 . words . filter isAlphaOrSpace . map toLower
   where
