@@ -7,30 +7,31 @@ patat:
   incrementalLists: true
 ...
 
-# What is *functional programming*?
 
-## It is a *theory* and *practice* of programming based in **math**
+# Learning *functional programming*
 
-# It might be use to write *composable programms*
+# Functional programing is a *theory* and *practice* of programming based in **mathematics**
 
-## Composable programms?
+# It might be used to write *composable programs*
+
+## Composable programs?
 
 Like:
 
 `find ./src -type f | grep "\.java" | xargs cat | grep " class "`
 
-# It might be used to exercise *intelectual violence*
+# It might be used to exercise *intellectual violence*
 
-## The elephant in the room
+## Intellectual violence?
 
-- *Intellectual Violence* is a Project Managment *AntiPattern*
+- *Intellectual Violence* is a Project Management *AntiPattern*
 
 - It occurs when *someone uses theory, technology or buzzword to intimidate
   others*
 
 - It leads to **incapability to learn**, **defensive culture** and **breakdown of communication**
 
-## Enablers of Intellectual Violenvce AntiPattern
+## Enablers of Intellectual Violence AntiPattern
 
 *Professional culture*
 
@@ -46,11 +47,11 @@ Like:
 
 ## Becoming Immune
 
-*Amateure culture*
+*Amateur culture*
 
-- Amateure means lover of stuff or someone not paid to do stuff
+- Amateur means lover of stuff or someone not paid to do stuff
 
-- Amateure does not expect himself to know
+- Amateur does not expect himself to know
 
 - Therefore he can learn
 
@@ -71,15 +72,15 @@ Mentoring culture is a culture of vulnerable professionals
 
 - I would like to talk about simple concepts: pure functions, function composition, currying
 
-- This simple concepts may took me a lot of time to get 
+- This simple concepts took me a lot of time to get 
 
 - I more or less understand them now which may make me sound as an ass
 
-- Please ask questions if you need more clarification
+- Please ask questions if you need clarification
 
-# *FP in Java and JavaScript*
+# *Learning FP*
 
-## FP, Mapped:
+## FP Overview, Mapped:
 
 >
 > **Composition of functions**
@@ -92,11 +93,30 @@ Mentoring culture is a culture of vulnerable professionals
 your programm runs here
 the land of **side-effects** - IO, randmoness etc.
 
-## The land of the (im)pure
+## Languages and tools:
+
+| Use                     | Feature       | Haskell | Clojure   | Java           | JS             |
+| ---                     | ---           | ---     | ---       | ---            | ---            |
+| Keeping pure            | purity        | YES     | NO        | NO             | NO             |
+|                         | immutable DS  | YES     | YES       | vavr           | immutable.js   |
+|                         | mutability    | LOW     | MANAGED   | HIGH           | RATHER CRAZY   |
+| Function composition    | HO functions  | YES     | YES       | lambdas        | YES            |
+|                         | composition   | YES     | YES       | lambdas        | one liner      |
+|                         | currying      | DEFAULT | kinda     | lambdas        | YES, ramda     |
+| Computation composition | containers    | YES     | library?  | vavr, optional | ramda-fantasy  |
+| Other nice to haves     | recursion TCO | kinda   | via recur | NO             | not now        | 
+|                         | pattern-match | YES     | YES       | vavr           | NO             |
+
+# *Learning FP in Java and JavaScript*
+
+# Purity
+
+## The land of the impure
+
 Adding an element to an array. Getting lost in inputs and outputs?
 
 JavaScript
-    
+        
     const addNum = {
       num: 3,
       to: function (a) {a.unshift(this.num); return a}
@@ -115,6 +135,7 @@ Java
     }
 
 ## The land of the pure
+
 Creating a method to add an element to an array. The pure way, step one. 
 
 Haskell
@@ -168,33 +189,65 @@ Java with vavr
 
 # Function composition
 
-How to calculate the count of all words in a string?
+## Function composition. Theory.
 
-## Step one. Make a list of all words. Haskell way:
+Function composition is a function like that:
+Haskell
+        
+    compose2  f g v = f g v
+    compose2' f g = f . g
+    compose2'' = (.)
+    
+JavaScript   
+    
+    compose2 = (f, g) => value => f(g(value);
+     
+Java    
+    
+    compose2 = ((f, g) -> value -> f.apply(g.apply(value)))
+    compose2alt = (f, g) -> f.compose(g); 
+    
+Function which takes two functions and returns new function.
+
+#How to calculate the count of all words in a string?
+
+## Step one. Make a lazy list of all words. Haskell way:
      
     listTokens :: String -> [String]
     listTokens = words . filter isAlphaOrSpace . map toLower
       where
         isAlphaOrSpace x =  isAlpha x || isSpace x
 
-## Java vavr
+## Step one. Make a lazy list of all words. Java way:
+    
+    Function1<String, String[]> toArrayOfTokens = txt -> txt
+               .toLowerCase()
+               .replaceAll("[^a-zA-Z\\d\\s:]", "")
+               .split("\\s+");
 
-
-## Javascript
-
+    Function1<String, Stream<String>> listTokens = toArrayOfTokens
+               .andThen(Arrays::stream)
+               .andThen(Stream::ofAll);
 
 ## Step Two. Merge a list of words into a map. Haskell way:
 
     countTokens :: [String] -> M.Map String Int
     countTokens = M.fromListWith (+) . (`zip` repeat 1)
 
+## Step Two. Merge a list of words into a map. Java.
 
-##Step Three. Compose. Haskell way:
+    Function1<Stream<String>, Map<String, Integer>> countTokens = stream -> stream
+                    .foldLeft(TreeMap.empty(), (p, c) -> p.put(c, p.getOrElse(c, 0) + 1));
+
+## Step Three. Compose. Haskell way:
 
     countWords :: String -> M.Map String Int
     countWords = countTokens . listTokens
 
+## Step Three. Compose. Java way:
+    
+    Function1<String, Map<String, Integer>> countWords = countTokens.compose(listTokens);
 
-
-
-
+# Testing it! Quickcheck FTW.
+# The step to be taken
+# Questions

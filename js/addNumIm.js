@@ -2,7 +2,7 @@ const List = require('immutable').List;
 
 const addNum = n => ls => ls.unshift(n);
 
-const addNum1 = addNum(3);
+const addNum3= addNum(3);
 
 const a = List.of(2, 1);
 console.log('a is ', a);
