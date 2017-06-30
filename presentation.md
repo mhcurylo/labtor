@@ -9,7 +9,7 @@ patat:
 
 # What is *functional programming*?
 
-# It is a *theory* and *practice* of programming based in **math**
+## It is a *theory* and *practice* of programming based in **math**
 
 # It might be use to write *composable programms*
 
@@ -69,14 +69,13 @@ Mentoring culture is a culture of vulnerable professionals
 
 ## Back to the point
 
-- I would like to talk about simple concepts: pure functions, function composition, currying,
-  partial application
+- I would like to talk about simple concepts: pure functions, function composition, currying
 
-- This simple concepts may take a lot time to learn and to understand right
+- This simple concepts may took me a lot of time to get 
 
-- I more or less understand them which may make me sound as an ass
+- I more or less understand them now which may make me sound as an ass
 
-- Please tell me if you need more clarification
+- Please ask questions if you need more clarification
 
 # *FP in Java and JavaScript*
 
@@ -86,7 +85,7 @@ Mentoring culture is a culture of vulnerable professionals
 > **Composition of functions**
 > the land of purity
 >
-> **Composition of effectful computations.**
+> **Composition of effectful computations**
 > the land of fantasy
 >
 
@@ -116,7 +115,26 @@ Java
     }
 
 ## The land of the pure
-Adding an element to an array. The pure way. 
+Creating a method to add an element to an array. The pure way, step one. 
+
+Haskell
+   
+    addNum:: Int -> [Int] -> [Int]
+    addNum n ls = (:) n ls
+
+JavaScript with Immutable.js
+    
+    const addNum = (x, ls) => ls.unshift(x);
+
+Java with vavr
+    
+    public class AddNumImm {
+      public static Function2<Integer, List<Integer>, List<Integer>>
+      addNum = (num, ls) -> ls.prepend(num);
+    }
+
+## The land of the pure
+Creating a method to add an element to an array. The pure way, step two. 
 
 Haskell
    
@@ -136,14 +154,15 @@ Java with vavr
 
 ## Thumbs up for purity and avoiding side-effects
 
-- Use immutable data structures
-- Do not assign - evaluate
-- Do not use statements - evaluate
-- In java - overuse final
+- Use immutable data structures - no hidden outputs!
+- Do not assign - evaluate - no oportunity for mutations!
+- Do not use statements - evaluate - less side effects!
+- Do not use loops - loops use assignments and mutations 
+- Overuse final, const - no reassignment!
 
 ## What can it give:
 
-- function composition
+- easier function composition
 - creating customized methods by currying lambdas
 - shorter, more reusable and easier to test code
 
@@ -151,22 +170,29 @@ Java with vavr
 
 How to calculate the count of all words in a string?
 
-Haskell way:
-    
-    
-    
-    
+## Step one. Make a list of all words. Haskell way:
+     
+    listTokens :: String -> [String]
+    listTokens = words . filter isAlphaOrSpace . map toLower
+      where
+        isAlphaOrSpace x =  isAlpha x || isSpace x
+
+## Java vavr
 
 
+## Javascript
 
 
+## Step Two. Merge a list of words into a map. Haskell way:
+
+    countTokens :: [String] -> M.Map String Int
+    countTokens = M.fromListWith (+) . (`zip` repeat 1)
 
 
+##Step Three. Compose. Haskell way:
 
-
-    
-    
-
+    countWords :: String -> M.Map String Int
+    countWords = countTokens . listTokens
 
 
 
