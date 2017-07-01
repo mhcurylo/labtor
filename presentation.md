@@ -140,8 +140,8 @@ Creating a method to add an element to an array. The pure way, step one.
 
 Haskell
    
-    addNum:: Int -> [Int] -> [Int]
-    addNum n ls = (:) n ls
+    addNum :: Num a => a -> [a] -> [a]
+    addNum n ls = n : ls
 
 JavaScript with Immutable.js
     
@@ -159,11 +159,11 @@ Creating a method to add an element to an array. The pure way, step two.
 
 Haskell
    
-    addNum:: Int -> [Int] -> [Int]
-    addNum n ls = (:) n ls
+    addNum5 :: Num a => [a] -> [a]
+    addNum5 = addNum 5
 
 JavaScript with Immutable.js
-    
+    n ls = n : ls
     const addNum = x => ls => ls.unshift(x);
 
 Java with vavr
