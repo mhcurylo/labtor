@@ -2,6 +2,8 @@ module Main where
 
 import qualified Data.Map as M
 import Data.Char (toLower, isSpace, isAlpha)
+import Data.Tuple
+import Data.Bifunctor
 
 main :: IO ()
 main = do
@@ -29,13 +31,14 @@ rank = M.fromList . concatMap attachRank . zip [0..] . M.toDescList . inverseMap
     attachRank (k, (_, ws)) = zip ws (repeat k)
 
 zipTogether :: M.Map String Int -> M.Map String Int -> M.Map String (Int, Int)
-zipTogether = M.intersectionWith (\x y -> (x, y))
+zipTogether = M.intersectionWith $ curry id
 
 ascCommon :: M.Map (Int, Int) [String] -> [String]
-ascCommon = take 10 . concat . map snd . M.assocs . inverseMapWith (\((a, b), v) -> (a + b, v))
+ascCommon = take 10 . concat . map snd . M.assocs . inverseMapWith (first $ uncurry (+))
+--(\((a, b), v) -> (a + b, v))
 
 inverseMap :: Ord k => Ord v => M.Map k v -> M.Map v [k]
-inverseMap = inverseMapWith (\(k, v) -> (v, [k]))
+inverseMap = inverseMapWith $ (second $ replicate 1) . swap
 
 inverseMapWith :: Ord k => Ord v => Ord a => Ord b => ((k, v) -> (a, [b])) -> M.Map k v -> M.Map a [b]
 inverseMapWith f = M.fromListWith (++) . map f . M.toList
