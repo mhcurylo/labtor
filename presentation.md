@@ -178,7 +178,7 @@ Java with vavr
 ## Thumbs up for purity and avoiding side-effects
 
 - Use immutable data structures - no hidden outputs!
-- Do not assign - evaluate - no oportunity for mutations!
+- Do not assign - evaluate - no opportunity for mutations!
 - Do not use statements - evaluate - less side effects!
 - Do not use loops - loops use assignments and mutations 
 - Overuse final, const - no reassignment!
