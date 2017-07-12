@@ -202,7 +202,7 @@ Haskell
     
 JavaScript   
     
-    compose2 = (f, g) => value => f(g(value);
+    compose2 = f => g => value => f(g(value);
      
 Java    
     
