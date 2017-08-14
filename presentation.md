@@ -85,13 +85,15 @@ Mentoring culture is a culture of vulnerable professionals
 >
 > **Composition of functions**
 > the land of purity
->
+> -------- a strange gap -----------
 > **Composition of effectful computations**
-> the land of fantasy
+> the land of fantasy, where you pretend your side-effects happen
 >
 
-your programm runs here
-the land of **side-effects** - IO, randmoness etc.
+--- chasm between syntax / semantics, char / meaning ---
+
+> your programm runs here
+> the land of **the true side-effects** - IO, randmoness etc.
 
 ## Languages and tools:
 
@@ -120,6 +122,7 @@ JavaScript
     const addNum = {
       num: 3,
       to: function (a) {a.unshift(this.num); return a}
+      setNum: function (n) { this.num = n }
     }
 
 Java
@@ -143,9 +146,9 @@ Haskell
     addNum :: Num a => a -> [a] -> [a]
     addNum n ls = n : ls
 
-JavaScript with Immutable.js
+JavaScript 
     
-    const addNum = (x, ls) => ls.unshift(x);
+    const addNum = (x, ls) => [x, ...ls];
 
 Java with vavr
     
@@ -154,7 +157,8 @@ Java with vavr
       addNum = (num, ls) -> ls.prepend(num);
     }
 
-## The land of the pure
+## The land of the pure. Curried.
+
 Creating a method to add an element to an array. The pure way, step two. 
 
 Haskell
@@ -163,8 +167,8 @@ Haskell
     addNum5 :: Num a => [a] -> [a]
     addNum5 = addNum 5
 
-JavaScript with Immutable.js
-    const addNum = x => ls => ls.unshift(x);
+JavaScript 
+    const addNum = x => ls => [x, ...ls];
     const addNum5 = addNum(5);
 
 Java with vavr
@@ -174,6 +178,32 @@ Java with vavr
       addNum = (num -> ls -> ls.prepend(num));
       Function1<List<Integer>, List<Integer>> addNum5 = addNum.apply(5); 
     }
+
+# Function composition
+
+## Function composition. Theory.
+
+    A --f--> B --g--> C
+    A ---- f ◯ g ---> C
+
+Function composition is a function like that:
+
+Haskell
+        
+    compose2  f g v = f (g v)
+    compose2' f g = f . g
+    compose2'' = (.)
+    
+JavaScript   
+    
+    compose2 = (f, g) => value => f(g(value);
+     
+Java with vavr    
+    
+    compose2 = ((f, g) -> value -> f.apply(g.apply(value)))
+    compose2alt = (f, g) -> f.compose(g); 
+    
+Function which takes two (or more) functions and returns a new function.
 
 ## Thumbs up for purity and avoiding side-effects
 
@@ -185,49 +215,28 @@ Java with vavr
 
 ## What can it give:
 
+- make function sigantures great again
 - easier function composition
-- creating customized methods by currying lambdas
+- creating customized methods by currying lambdas and composing functions
 - shorter, more reusable and easier to test code
 
-# Function composition
+# Comparing Haskell to java. How to calculate the count of all words in a string?
 
-## Function composition. Theory.
-
-Function composition is a function like that:
-Haskell
-        
-    compose2  f g v = f g v
-    compose2' f g = f . g
-    compose2'' = (.)
-    
-JavaScript   
-    
-    compose2 = (f, g) => value => f(g(value);
-     
-Java    
-    
-    compose2 = ((f, g) -> value -> f.apply(g.apply(value)))
-    compose2alt = (f, g) -> f.compose(g); 
-    
-Function which takes two functions and returns new function.
-
-#How to calculate the count of all words in a string?
-
-## Step one. Make a lazy list of all words. Haskell way:
+## Step one. Make a list of all words. Haskell way:
      
     listTokens :: String -> [String]
     listTokens = words . filter isAlphaOrSpace . map toLower
       where
         isAlphaOrSpace x =  isAlpha x || isSpace x
 
-## Step one. Make a lazy list of all words. Java way:
+## Step one. Make a list of all words. Java way:
     
     Function1<String, String[]> toArrayOfTokens = txt -> txt
                .toLowerCase()
                .replaceAll("[^a-zA-Z\\d\\s:]", "")
                .split("\\s+");
 
-    Function1<String, Stream<String>> listTokens = toArrayOfTokens
+    Function1<String[], Stream<String>> listTokens = toArrayOfTokens
                .andThen(Arrays::stream)
                .andThen(Stream::ofAll);
 

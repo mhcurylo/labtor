@@ -4,6 +4,7 @@ const addNum = {
 }
 
 const a = [1, 2];
+
 console.log('a is ', a);
-console.log('to output', addNum.to(a));
+console.log('addNum output', addNum.to(a));
 console.log('a is ', a);

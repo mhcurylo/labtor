@@ -26,16 +26,13 @@ public class AddNumTest {
     }
 
     @Test
-    public void doesNotOutputOnInput() {
-        List<Integer> ls = new ArrayList<>();
-        ls.add(0);
+    public void doesNotUseInputAsOutput() {
 
         CheckedFunction1<Integer, Boolean> outputNotChanged = (x) -> {
-            final Integer element0 = ls.get(0);
+            List<Integer> ls = new ArrayList<>();
+            ls.add(0);
 
-            new AddNum(x).to(ls);
-
-            return ls.get(0).equals(element0);
+            return new AddNum(x).to(ls).size() > ls.size();
         };
 
         CheckResult result = Property
