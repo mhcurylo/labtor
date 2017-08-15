@@ -7,6 +7,16 @@ patat:
   incrementalLists: true
 ...
 
+# An FP quote first
+
+## The FP quote
+
+No matter what language you work in, programming in a functional style provides
+benefits. You should do it whenever it is convenient, and you should think hard
+about the decision when it isn't convenient. 
+
+**In-depth: Functional programming in C++**
+*John Carmack*
 
 # Learning *functional programming*
 
