@@ -196,9 +196,9 @@ Java with vavr
 ## Function composition. Theory.
 
     A --f--> B --g--> C
-    A ---- f ◯ g ---> C
+    A ---- g ◯ f ---> C
  
-  composition of function f and function g is a function h which works as if h(v) = f(g(v))
+  composition of function g and function f is a function h which works as if h(v) = g(f(v))
 
 ## TC;DR
 
@@ -206,18 +206,18 @@ Function composition is a function like that:
 
 Haskell
         
-    compose2  f g v = f (g v)
-    compose2' f g = f . g
+    compose2  g f v = g (f v)
+    compose2' g f = g . f
     compose2'' = (.)
     
 JavaScript   
     
-    compose2 = (f, g) => value => f(g(value);
+    compose2 = (g, f) => value => g(f(value));
      
 Java with vavr    
     
-    compose2 = ((f, g) -> value -> f.apply(g.apply(value)))
-    compose2alt = (f, g) -> f.compose(g); 
+    compose2 = ((g, f) -> value -> g.apply(f.apply(value)))
+    compose2alt = (g, f) -> g.compose(f); 
     
 Function which takes two (or more) functions and returns a new function.
 
