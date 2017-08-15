@@ -97,17 +97,19 @@ Mentoring culture is a culture of vulnerable professionals
 
 ## Languages and tools:
 
-| Use                     | Feature       | Haskell | Clojure   | Java           | JS             |
-| ---                     | ---           | ---     | ---       | ---            | ---            |
-| Keeping pure            | purity        | YES     | NO        | NO             | NO             |
-|                         | immutable DS  | YES     | YES       | vavr           | immutable.js   |
-|                         | mutability    | LOW     | MANAGED   | HIGH           | RATHER CRAZY   |
-| Function composition    | HO functions  | YES     | YES       | lambdas        | YES            |
-|                         | composition   | YES     | YES       | lambdas        | one liner      |
-|                         | currying      | DEFAULT | kinda     | lambdas        | YES, ramda     |
-| Computation composition | containers    | YES     | library?  | vavr, optional | ramda-fantasy  |
-| Other nice to haves     | recursion TCO | kinda   | via recur | NO             | not now        | 
-|                         | pattern-match | YES     | YES       | vavr           | NO             |
+| Use                     | Feature           | Haskell | Clojure   | Java           | JS             |
+| ---                     | ---               | ---     | ---       | ---            | ---            |
+| Keeping pure            | purity            | YES     | NO        | NO             | NO             |
+|                         | immutable DS      | YES     | YES       | vavr           | immutable.js   |
+|                         | mutability        | LOW     | MANAGED   | HIGH           | RATHER CRAZY   |
+| Function composition    | HO functions      | YES     | YES       | lambdas        | YES            |
+|                         | composition       | YES     | YES       | lambdas        | one liner      |
+|                         | currying          | DEFAULT | kinda     | lambdas        | YES, ramda     |
+|                         | types             | YES     | OPTIONAL  | YES            | TS, flow       |
+| Computation composition | containers        | YES     | library?  | vavr, optional | ramda-fantasy  |
+| Other nice to haves     | recursion TCO     | kinda   | via recur | NO             | not now        | 
+|                         | pattern-match     | YES     | YES       | vavr           | NO             |
+|                         | add-hoc polymorphy| YES     | YES       | NO, AFAIK      | monkey-patching|
 
 # *Learning FP in Java and JavaScript*
 
@@ -185,6 +187,10 @@ Java with vavr
 
     A --f--> B --g--> C
     A ---- f ◯ g ---> C
+ 
+  composition of function f and function g is a function h which works as if h(v) = f(g(v))
+
+## TC;DR
 
 Function composition is a function like that:
 
@@ -210,16 +216,35 @@ Function which takes two (or more) functions and returns a new function.
 - Use immutable data structures - no hidden outputs!
 - Do not assign - evaluate - no opportunity for mutations!
 - Do not use statements - evaluate - less side effects!
-- Do not use loops - loops use assignments and mutations 
+- Do not use loops - loops use assignments and mutations!
 - Overuse final, const - no reassignment!
 
 ## What can it give:
 
-- make function sigantures great again
-- easier function composition
-- creating customized methods by currying lambdas and composing functions
-- shorter, more reusable and easier to test code
+- Make function sigantures great again!
+- Easier function composition
+- Creating customized methods by currying lambdas and composing functions
+- Shorter, more reusable and easier to test code
 
+## A lot of freebees!
+
+'Free' as in 'free theorems'.
+
+For example:
+
+GIVEN a function 
+     
+    f: [a] -> a
+AND a list of a 
+     
+    ls: [a] 
+WHEN a function g is 
+     
+    g: a -> b
+
+THEN for any a and b 
+    
+    f (map g ls) == g (f ls) 
 # Comparing Haskell to java. How to calculate the count of all words in a string?
 
 ## Step one. Make a list of all words. Haskell way:
@@ -237,8 +262,7 @@ Function which takes two (or more) functions and returns a new function.
                .split("\\s+");
 
     Function1<String[], Stream<String>> listTokens = toArrayOfTokens
-               .andThen(Arrays::stream)
-               .andThen(Stream::ofAll);
+               .andThen(Stream::of);
 
 ## Step Two. Merge a list of words into a map. Haskell way:
 
@@ -260,5 +284,5 @@ Function which takes two (or more) functions and returns a new function.
     Function1<String, Map<String, Integer>> countWords = countTokens.compose(listTokens);
 
 # Testing it! Quickcheck FTW.
-# The step to be taken
-# Questions
+# Making it work.
+# THANKS! Questions?

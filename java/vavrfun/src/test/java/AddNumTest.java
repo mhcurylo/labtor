@@ -41,6 +41,6 @@ public class AddNumTest {
                 .suchThat(outputNotChanged)
                 .check();
 
-        result.assertIsSatisfied();
+        result.assertIsFalsified();
     }
 }
