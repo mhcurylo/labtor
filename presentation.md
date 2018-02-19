@@ -20,7 +20,7 @@ about the decision when it isn't convenient.
 
 # Learning *functional programming*
 
-# Functional programing is a *theory* and *practice* of programming based in **mathematics**
+# Functional programming is a *theory* and *practice* of programming based in **mathematics**
 
 # It might be used to write *composable programs*
 
@@ -72,7 +72,7 @@ Like:
 
 - It takes courage to admit lack of knowledge
 
-- Courageous == vulnerable (think trench warefare or cavalery charge)
+- Courageous == vulnerable (think trench warefare or cavalry charge)
 
 Mentoring culture is a culture of vulnerable professionals
 
@@ -233,7 +233,7 @@ Function which takes two (or more) functions and returns a new function.
 
 - Make function sigantures great again!
 - Easier function composition
-- Creating customized methods by currying lambdas and composing functions
+- Creating customised methods by currying lambdas and composing functions
 - Shorter, more reusable and easier to test code
 
 ## A lot of freebees!
